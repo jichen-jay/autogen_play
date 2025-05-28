@@ -192,9 +192,10 @@ class EnhancedRoleSystem:
 {time_context}
 
 YOUR TASK: Use your web search tools to find comprehensive information. For each search:
-1. Use search_web_information() with relevant search terms
-2. If you find specific URLs in results, use scrape_webpage_content() to get detailed information
-3. Search from multiple angles to get complete coverage
+1. If the analysis topic contains a URL, always use the web scraper tool first to extract the full content of the page before using any search tools
+2. Use search_web_information() with relevant search terms
+3. If you find specific URLs in results, use scrape_webpage_content() to get detailed information
+4. Search from multiple angles to get complete coverage
 
 Focus on: Key facts and figures, credible sources, official statements, and relevant developments.
 Always cite your sources and organize findings clearly.""",
@@ -211,17 +212,18 @@ Focus on:
 5. Providing structured insights with supporting evidence
 
 Use verify_information_with_search() to cross-check critical claims that need verification.
-Your analysis should be thorough and evidence-based.""",
+Your analysis should be thorough and evidence-based.
+
+Reflect on whether the content requires complex analysis or if a concise factual summary suffices. Adjust your response accordingly.
+""",
 
             "synthesizer": f"""You are a KNOWLEDGE SYNTHESIZER creating a comprehensive analysis of {self.analysis_topic}.
 
 {time_context}
 
-Create a well-structured comprehensive report that integrates all findings. Your report should be:
-- Complete and thorough
-- Well-organized with clear sections
+Create a report that integrates all findings. Your report should be:
+- Objective and factual
 - Evidence-based with proper citations
-- Actionable for decision-makers
 - Appropriate for the complexity and nature of the topic
 
 Structure your report in a way that best serves the topic and audience needs.""",
@@ -243,16 +245,17 @@ Use verify_information_with_search() to fact-check critical claims. Ensure the a
 
 {time_context}
 
-Create a polished, professional report that effectively communicates the analysis findings. 
+Create a professional report that effectively communicates the analysis findings. 
 Your report should:
 - Be clear and well-structured
-- Include an executive summary
 - Present findings logically
-- Provide actionable insights
+- Provide actionable insights when necessary
 - Be appropriate for professional audiences
-- Follow best practices for analytical reporting
 
-Focus on clarity, accuracy, and practical value."""
+Focus on clarity, accuracy, and practical value.
+
+Do not generate additional insights beyond the given content if not warranted.
+"""
         }
         
         return base_templates.get(role, f"You are a {role} analyzing {self.analysis_topic}.")

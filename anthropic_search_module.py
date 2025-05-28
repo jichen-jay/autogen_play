@@ -11,7 +11,7 @@ class AnthropicSearchClient:
         self, 
         api_key: Optional[str] = None,
         model: str = "claude-3-5-haiku-20241022",
-        max_tokens: int = 4000,
+        max_tokens: int = 2000,
         verbose: bool = False
     ):
         self.client = anthropic.Anthropic(api_key=api_key)
@@ -20,14 +20,14 @@ class AnthropicSearchClient:
         self.verbose = verbose
     
     def search_and_extract_text(self, query: str) -> Optional[str]:
-        messages = [{"role": "user", "content": f"{query}"}]
+        messages = [{"role": "user", "content": f"{query}. only use information from the search results, do not rely on prior knowledge, only cite web results"}]
         
         try:
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
                 messages=messages,
-                tools=[{"type": "web_search_20250305", "name": "web_search"}]
+                tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 1 }] # any other techniques to expedite search?
             )
             
             if self.verbose:
@@ -54,8 +54,8 @@ class AnthropicSearchClient:
 def search_and_extract_text(
     query: str,
     verbose: bool = False,
-    model: str = "claude-3-5-haiku-20241022",
-    max_tokens: int = 4000
+    model: str = "claude-3-5-haiku-20241022",   # are there faster, cheaper models to use?
+    max_tokens: int = 2000
 ) -> Optional[str]:
     client = AnthropicSearchClient(
         model=model,
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         print("❌ Error: ANTHROPIC_API_KEY not found")
         exit(1)
     
-    query = "search for Kitchener's weather today"
+    query = "search for gas price in Ontario"
     result = search_and_extract_text(query, verbose=True)
     
     if result:
